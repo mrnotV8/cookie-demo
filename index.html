@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title> AppCookie01</title>
+
+    <link rel="stylesheet" href="https://cdn.kiprotect.com/klaro/v0.7/klaro.min.css"/>
+    
+    <script src="js/klaro-config.js"></script>
+
+    <script defer data-config="klaroConfig" type="application/javascript"
+    src="https://cdn.kiprotect.com/klaro/v0.7/klaro.js"></script>
+
+
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">AppCookie01</a>
+
+                <div class="ms-auto">
+                    <!-- ปุ่มเลือกภาษา -->
+                    <button onclick="changeLanguage('th')" class="btn btn-sm btn-outline-primary">TH</button>
+                    <button onclick="changeLanguage('en')" class="btn btn-sm btn-outline-secondary">EN</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2025 - AppCookie01 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+
+</body>
+</html>
