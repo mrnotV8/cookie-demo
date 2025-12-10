@@ -147,7 +147,7 @@ window.klaroConfig = {
             required: false
         },
         {
-            name: 'google-tag-manager',
+            name: 'google-tag-manager-fb',
             title: 'Facebook Pixel',
             purposes: ['marketing'],
             cookies: ['_fbp', 'fr'],
