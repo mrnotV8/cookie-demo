@@ -133,7 +133,7 @@ window.klaroConfig = {
             required: true
         },
         {
-            name: 'google-analytics',
+            name: 'google-tag-manager',
             title: 'Google Analytics',
             purposes: ['analytics'],
             cookies: [/^_ga/, /^_gid/, /^_gat/],
@@ -143,11 +143,11 @@ window.klaroConfig = {
             name: 'demo-analytics',
             title: 'Demo Analytics',
             purposes: ['analytics'],
-            cookies: [/^_ga/, /^_gid/, /^_gat/,/^demo_cookie/],
+            cookies: [/^_ga/, /^_gid/, /^_gat/],
             required: false
         },
         {
-            name: 'facebook-pixel',
+            name: 'google-tag-manager',
             title: 'Facebook Pixel',
             purposes: ['marketing'],
             cookies: ['_fbp', 'fr'],
