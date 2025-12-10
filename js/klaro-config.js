@@ -133,26 +133,26 @@ window.klaroConfig = {
             required: true
         },
         {
-            name: 'google-tag-manager',
+            name: 'google-analytics',
             title: 'Google Analytics',
             purposes: ['analytics'],
-            cookies: [/^_ga/, /^_gid/, /^_gat/],
+            //cookies: [/^_ga/, /^_gid/, /^_gat/],
             required: false
         },
         {
-            name: 'demo-analytics',
-            title: 'Demo Analytics',
+            name: 'clarity',
+            title: 'Microsoft Clarity',
             purposes: ['analytics'],
-            cookies: [/^_ga/, /^_gid/, /^_gat/],
+            //cookies: [/^_ga/, /^_gid/, /^_gat/],
             required: false
         },
-        {
-            name: 'google-tag-manager-fb',
-            title: 'Facebook Pixel',
-            purposes: ['marketing'],
-            cookies: ['_fbp', 'fr'],
-            required: false
-        },
+        // {
+        //     name: 'google-tag-manager-fb',
+        //     title: 'Facebook Pixel',
+        //     purposes: ['marketing'],
+        //     //cookies: ['_fbp', 'fr'],
+        //     required: false
+        // },
         // {
         //     name: 'google-login',
         //     title: 'Google Login',
