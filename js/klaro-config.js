@@ -175,11 +175,11 @@ window.klaroConfig = {
         console.log("📢 Klaro callback triggered");
         console.log("🔍 Current consent object:", consent);
         console.log("🔧 App changed:", app);
-        
+
         // เช็คว่า GTM โหลดมารึยัง
         window.dataLayer = window.dataLayer || [];
         
-        // Loop เช็คทุก service ที่เราตั้งไว้
+        // // Loop เช็คทุก service ที่เราตั้งไว้
         for (var appName in consent) {
             
             if (consent[appName]) {
@@ -192,5 +192,9 @@ window.klaroConfig = {
                 });
             }
         }
+
     }
+
+    
+
 };
