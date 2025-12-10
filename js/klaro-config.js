@@ -181,7 +181,10 @@ window.klaroConfig = {
         
         // Loop เช็คทุก service ที่เราตั้งไว้
         for (var appName in consent) {
+            
             if (consent[appName]) {
+
+                console.log(" appName:", appName);
                 // ถ้ายอมรับ service ไหน ให้ยิง event นั้นเข้า GTM
                 window.dataLayer.push({
                     'event': 'klaro-consent-granted',
