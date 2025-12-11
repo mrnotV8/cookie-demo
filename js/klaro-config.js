@@ -23,14 +23,18 @@ function getCookie(name) {
 // === Load language from cookie  value: th , en ===
 var lang = getCookie("site-lang") || "en";
 
+var privacyPolicyUrl = lang === 'th'
+    ? 'https://genplay.co.th/cookie-policy/'
+    : 'https://genplay.co.th/en/cookie-policy/';
+
 
 window.klaroConfig = {
      version: 1,
 
     // การตั้งค่า Light Mode ที่ถูกต้อง
     styling: { 
-        //theme: ['light', 'bottom', 'wide'] 
-        theme: ['light', 'bottom', 'narrow']
+        theme: ['light', 'bottom', 'wide'] 
+        //theme: ['light', 'bottom', 'narrow']
         //theme: ['dark', 'bottom', 'wide']
         //theme: ['dark', 'top', 'narrow']
     },
@@ -38,7 +42,8 @@ window.klaroConfig = {
     appName: 'My Website',
     lang: lang, // ใช้ตัวแปรภาษา
     
-    privacyPolicy: 'https://genplay.co.th/cookie-policy/', // ลิงก์นโยบายความเป็นส่วนตัว
+    // ลิงก์นโยบายความเป็นส่วนตัว
+    privacyPolicy: privacyPolicyUrl,
     
     noticeAsModal: false, // ใช้ notice แบบแถบ (Non-modal notice)
     mustConsent: false,
@@ -57,6 +62,7 @@ window.klaroConfig = {
         'personalization'
     ],
 
+    
     translations: {
         // ภาษาไทย
         th: {
@@ -105,13 +111,13 @@ window.klaroConfig = {
         en: {
             consentNotice: {
                 learnMore: 'Privacy Settings',
-                description: 'Our website uses cookies to provide you with the best possible browsing experience and to ensure full access to all of our services. You can learn more about our use of cookies from cookie policy',
+                description: 'Our website uses cookies to provide you with the best possible browsing experience and to ensure full access to all of our services. You can learn more about our use of cookies from Cookie Policy',
             },
             consentModal: {
                 title: 'Privacy Settings',
                 description: 'We use cookies to improve your experience. You can customize your preferences below.',
                 privacyPolicy: {
-                    name: 'privacy policy',
+                    name: 'Privacy Policy',
                     text: 'For more info, please read our {privacyPolicy}.'
                 }
             },
@@ -145,38 +151,36 @@ window.klaroConfig = {
         }
     },
 
+
+
     services: [
-        // ================================================================
-        // 1) Google Tag Manager (GTM)
-        // ================================================================
         {
             name: 'site-core',
-            title: 'Website System',
+            title: 'Web Session',
             purposes: ['essential'],
             cookies: ['ASP.NET_SessionId', 'production-dynastysea'],
             required: true
         },
         {
             name: 'google-tag-manager',
+            title: 'Google Tag Manager',
             required: true,
             purposes: ['essential'],
 
             onAccept: `
-                console.log("[Klaro] GTM Accepted");
+                //console.log("[Klaro] GTM Accepted");
                 // notify GTM for all accepted services
                 for(let k of Object.keys(opts.consents)){
-                    console.log("for"+ opts.consents[k]);
-
                     if (opts.consents[k]){
                         let eventName = 'klaro-consent-granted'
-                        console.log("[Klaro] Push Event to GTM:", eventName);
+                        //console.log("[Klaro] Push Event to GTM:", eventName);
                         dataLayer.push({'event': eventName});
                     }
                 }
             `,
 
             onInit: `
-                console.log("[Klaro] GTM Init");
+                //console.log("[Klaro] GTM Init");
                 window.dataLayer = window.dataLayer || [];
                 window.gtag = function(){ dataLayer.push(arguments); }
 
@@ -192,9 +196,10 @@ window.klaroConfig = {
         },
         {
             name: 'google-analytics',
+            title: 'Google Analytics (GA4)',
             purposes: ['analytics'],
             cookies: [
-                /^_ga(_.*)?/   // delete GA cookies on decline
+                /^_ga/, /^_gid/, /^_gat/, /^_dc_gtm_/, /^_gac_/,
             ],
 
               onAccept: `
@@ -225,13 +230,19 @@ window.klaroConfig = {
         },
         {
             name: 'clarity',
+            title: 'Microsoft Clarity',
             purposes: ['analytics'],
             cookies: [
-                /^_ga/, /^_gid/, /^_gat/
+                /^_clck/,       // Clarity Persist User info
+                /^_clsk/,       // Clarity Session info
+                /^CLID/,        // Clarity ID
+                /^ANONCHK/,     // Clarity anonymous check
+                /^MR/,          // Microsoft common
+                /^MUID/,        // Microsoft User ID (ใช้ร่วมกับ Bing/Clarity)
+                /^SM/           // Session Management
             ],
 
             onAccept: `
-                console.log("[Klaro] GA Accepted");
                 gtag('consent', 'update', {
                         'ad_storage': 'granted',
                         'analytics_storage': 'granted',
@@ -239,19 +250,78 @@ window.klaroConfig = {
                         'ad_personalization': 'granted'
                 });
 
-
-                // Event กลางสำหรับ GTM
                 dataLayer.push({
                     'event': 'klaro-consent-granted',
                     'klaro_service': 'clarity'
-                });
-
-                
+                });  
             `,
 
             onDecline: `
-                console.log("[Klaro] GA Declined");
+                gtag('consent', 'update', {
+                    'ad_storage': 'denied',
+                    'analytics_storage': 'denied',
+                    'ad_user_data': 'denied',
+                    'ad_personalization': 'denied'
+                });
+            `,
+        },
+        {
+            name: 'fb-pixel',
+            title: 'Facebook Pixel',
+            purposes: ['marketing'],
+            cookies: [
+                '_fbp',
+                '_fbc'
+            ],
 
+            onAccept: `
+                gtag('consent', 'update', {
+                        'ad_storage': 'granted',
+                        'analytics_storage': 'granted',
+                        'ad_user_data': 'granted',
+                        'ad_personalization': 'granted'
+                });
+
+                dataLayer.push({
+                    'event': 'klaro-consent-granted',
+                    'klaro_service': 'fb-pixel'
+                });
+            `,
+
+            onDecline: `
+                gtag('consent', 'update', {
+                    'ad_storage': 'denied',
+                    'analytics_storage': 'denied',
+                    'ad_user_data': 'denied',
+                    'ad_personalization': 'denied'
+                });
+            `,
+        },
+        {
+            name: 'google-ads',
+            title: 'Google Ads',
+            purposes: ['marketing'],
+            cookies: [
+                 /^_gcl_/,   // ครอบคลุม _gcl_au, _gcl_aw, _gcl_dc
+                /^__gads/,  // Google Ads
+                /^__gpi/    // Google Publisher Id
+            ],
+
+            onAccept: `
+                gtag('consent', 'update', {
+                        'ad_storage': 'granted',
+                        'analytics_storage': 'granted',
+                        'ad_user_data': 'granted',
+                        'ad_personalization': 'granted'
+                });
+
+                dataLayer.push({
+                    'event': 'klaro-consent-granted',
+                    'klaro_service': 'google-ads'
+                });
+            `,
+
+            onDecline: `
                 gtag('consent', 'update', {
                     'ad_storage': 'denied',
                     'analytics_storage': 'denied',
