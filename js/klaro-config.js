@@ -52,19 +52,21 @@ window.klaroConfig = {
                 /^_ga(_.*)?/   // delete GA cookies on decline
             ],
 
-            onAccept: `
+              onAccept: `
                 console.log("[Klaro] GA Accepted");
-                gtag('consent', 'update', {
-                    'analytics_storage': 'granted'
-                });
-            `,
+                gtag('consent', 'update', { 'analytics_storage': 'granted' });
 
-            onDecline: `
-                console.log("[Klaro] GA Declined");
-                gtag('consent', 'update', {
-                    'analytics_storage': 'denied'
+                // Event กลางสำหรับ GTM
+                dataLayer.push({
+                    'event': 'klaro-consent-granted',
+                    'klaro_service': 'google-analytics'
                 });
-            `,
+                `,
+
+                onDecline: `
+                    console.log("[Klaro] GA Declined");
+                    gtag('consent', 'update', { 'analytics_storage': 'denied' });
+                `,
         },
         {
             name: 'clarity',
@@ -78,6 +80,14 @@ window.klaroConfig = {
                 gtag('consent', 'update', {
                     'analytics_storage': 'granted'
                 });
+
+                         // Event กลางสำหรับ GTM
+                dataLayer.push({
+                    'event': 'klaro-consent-granted',
+                    'klaro_service': 'clarity'
+                });
+
+                
             `,
 
             onDecline: `
