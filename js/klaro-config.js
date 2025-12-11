@@ -9,13 +9,15 @@ window.klaroConfig = {
         // ================================================================
         {
             name: 'google-tag-manager',
-            required: true,
+            required: false,
             purposes: ['marketing'],
 
             onAccept: `
                 console.log("[Klaro] GTM Accepted");
                 // notify GTM for all accepted services
                 for(let k of Object.keys(opts.consents)){
+                    console.log("for"+ opts.consents[k]);
+
                     if (opts.consents[k]){
                         let eventName = 'klaro-consent-granted'
                         console.log("[Klaro] Push Event to GTM:", eventName);
@@ -64,30 +66,25 @@ window.klaroConfig = {
                 });
             `,
         },
-
-        // ================================================================
-        // 3) Microsoft Clarity
-        // ================================================================
         {
             name: 'clarity',
             purposes: ['analytics'],
-            cookies: ['_clck', '_clsk'],
+            cookies: [
+                /^_ga/, /^_gid/, /^_gat/
+            ],
 
             onAccept: `
-                console.log("[Klaro] Clarity Accepted");
-
-                // โหลดสคริปต์ Clarity
-                (function(c,l,a,r,i,t,y){
-                    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-                    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-                    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-                })(window, document, "clarity", "script", "YOUR-CLARITY-ID");
-
-                console.log("[Klaro] Clarity Script Loaded");
+                console.log("[Klaro] GA Accepted");
+                gtag('consent', 'update', {
+                    'analytics_storage': 'granted'
+                });
             `,
 
             onDecline: `
-                console.log("[Klaro] Clarity Declined - removing cookies");
+                console.log("[Klaro] GA Declined");
+                gtag('consent', 'update', {
+                    'analytics_storage': 'denied'
+                });
             `,
         },
 
