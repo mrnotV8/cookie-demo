@@ -176,8 +176,6 @@ window.klaroConfig = {
 
               onAccept: `
                 console.log("[Klaro] GA Accepted");
-                gtag('consent', 'update', { 'analytics_storage': 'granted' });
-
                 gtag('consent', 'update', {
                         'ad_storage': 'granted',
                         'analytics_storage': 'granted',
@@ -211,7 +209,6 @@ window.klaroConfig = {
 
             onAccept: `
                 console.log("[Klaro] GA Accepted");
-                
                 gtag('consent', 'update', {
                         'ad_storage': 'granted',
                         'analytics_storage': 'granted',
