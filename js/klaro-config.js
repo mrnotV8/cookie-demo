@@ -41,9 +41,9 @@ window.klaroConfig = {
     
     appName: 'My Website',
     lang: lang, // ใช้ตัวแปรภาษา
-    
     // ลิงก์นโยบายความเป็นส่วนตัว
     privacyPolicy: privacyPolicyUrl,
+    eventName : 'klaro-consent-granted',  
     
     noticeAsModal: false, // ใช้ notice แบบแถบ (Non-modal notice)
     mustConsent: false,
@@ -149,11 +149,10 @@ window.klaroConfig = {
             acceptAll:'Accept All',
             poweredBy: 'Powered by',
         }
-    },
-
-
+    },  
 
     services: [
+        //essential
         {
             name: 'site-core',
             title: 'Web Session',
@@ -161,6 +160,7 @@ window.klaroConfig = {
             cookies: ['ASP.NET_SessionId', 'production-dynastysea'],
             required: true
         },
+        //essential > google-tag-manager
         {
             name: 'google-tag-manager',
             title: 'Google Tag Manager',
@@ -170,9 +170,11 @@ window.klaroConfig = {
             onAccept: `
                 //console.log("[Klaro] GTM Accepted");
                 // notify GTM for all accepted services
+                const eventName = opts.config.eventName;
+
                 for(let k of Object.keys(opts.consents)){
                     if (opts.consents[k]){
-                        let eventName = 'klaro-consent-granted'
+                        //let eventName = 'klaro-consent-granted'
                         //console.log("[Klaro] Push Event to GTM:", eventName);
                         dataLayer.push({'event': eventName});
                     }
@@ -194,6 +196,7 @@ window.klaroConfig = {
                 gtag('set', 'ads_data_redaction', true);
             `,
         },
+        //analytics
         {
             name: 'google-analytics',
             title: 'Google Analytics (GA4)',
@@ -203,7 +206,9 @@ window.klaroConfig = {
             ],
 
               onAccept: `
-                console.log("[Klaro] GA Accepted");
+                //console.log("[Klaro] GA Accepted");
+                const eventName = opts.config.eventName;
+
                 gtag('consent', 'update', {
                         'ad_storage': 'granted',
                         'analytics_storage': 'granted',
@@ -213,13 +218,13 @@ window.klaroConfig = {
 
                 // Event กลางสำหรับ GTM
                 dataLayer.push({
-                    'event': 'klaro-consent-granted',
+                    'event': eventName,
                     'klaro_service': 'google-analytics'
                 });
                 `,
 
                 onDecline: `
-                    console.log("[Klaro] GA Declined");
+                  //console.log("[Klaro] GA Declined");
                   gtag('consent', 'update', {
                         'ad_storage': 'denied',
                         'analytics_storage': 'denied',
@@ -243,6 +248,8 @@ window.klaroConfig = {
             ],
 
             onAccept: `
+                const eventName = opts.config.eventName;
+
                 gtag('consent', 'update', {
                         'ad_storage': 'granted',
                         'analytics_storage': 'granted',
@@ -251,7 +258,7 @@ window.klaroConfig = {
                 });
 
                 dataLayer.push({
-                    'event': 'klaro-consent-granted',
+                    'event': eventName,
                     'klaro_service': 'clarity'
                 });  
             `,
@@ -265,6 +272,7 @@ window.klaroConfig = {
                 });
             `,
         },
+        //marketing
         {
             name: 'fb-pixel',
             title: 'Facebook Pixel',
