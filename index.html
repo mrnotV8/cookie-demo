@@ -128,6 +128,10 @@
                 ตั้งค่าคุกกี้ใหม่
             </button>
 
+            <a href="#" id="cookie-settings-link">
+                ตั้งค่าคุกกี้
+            </a>
+
         </main>
     </div>
 
@@ -136,5 +140,20 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+
+<script>
+   document.getElementById('cookie-settings-link')
+        .addEventListener('click', function (e) {
+            e.preventDefault();
+
+            if (hasKlaroConsent()) {
+                // เคยกด Accept หรือ Decline แล้ว
+                klaro.show();
+            } else {
+                // ยังไม่เคยตัดสินใจ
+                console.log('ยังไม่มีการให้ความยินยอม');
+            }
+        });
+</script>
 
 </html>

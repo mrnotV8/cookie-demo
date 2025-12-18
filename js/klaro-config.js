@@ -30,6 +30,7 @@ var privacyPolicyUrl = lang === 'th'
 
 window.klaroConfig = {
      version: 1,
+     
 
     // การตั้งค่า Light Mode ที่ถูกต้อง
     styling: { 

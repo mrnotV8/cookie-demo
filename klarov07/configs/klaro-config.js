@@ -20,6 +20,18 @@ function getCookie(name) {
     return null;
 }
 
+document.addEventListener('DOMContentLoaded', function () {
+    if (!hasKlaroConsent()) {
+        const btn = document.getElementById('cookie-settings-link');
+        if (btn) btn.style.display = 'none';
+    }
+});
+
+function hasKlaroConsent() {
+    return getCookie('klaro') !== null;
+}
+
+
 // === Load language from cookie  value: th , en ===
 var lang = getCookie("site-lang") || "en";
 
@@ -105,7 +117,8 @@ window.klaroConfig = {
             acceptSelected: 'ยอมรับรายการที่เลือก',
             acceptAll:'ยอมรับทั้งหมด',
             poweredBy: 'ขับเคลื่อนโดย',
-        },
+        },  // เปิดปุ่ม "Manage Cookies"
+
 
         // ภาษาอังกฤษ 
         en: {
