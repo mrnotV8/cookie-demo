@@ -124,13 +124,9 @@
             <p class="mt-3 text-muted">
                 ระบบจัดการคุกกี้พร้อมการเลือกภาษา (TH/EN)
             </p>
-            <button onclick="klaro.show()" class="btn btn-secondary">
-                ตั้งค่าคุกกี้ใหม่
+            <button id="cookie-settings-link" style="display:none">
+                🍪 ตั้งค่า Cookie
             </button>
-
-            <a href="#" id="cookie-settings-link">
-                ตั้งค่าคุกกี้
-            </a>
 
         </main>
     </div>
@@ -142,18 +138,42 @@
 </body>
 
 <script>
-   document.getElementById('cookie-settings-link')
-        .addEventListener('click', function (e) {
-            e.preventDefault();
+    window.dataLayer = window.dataLayer || [];
 
-            if (hasKlaroConsent()) {
-                // เคยกด Accept หรือ Decline แล้ว
-                klaro.show();
-            } else {
-                // ยังไม่เคยตัดสินใจ
-                console.log('ยังไม่มีการให้ความยินยอม');
+    window.addEventListener('load', function () {
+
+        const btn = document.getElementById('cookie-settings-link');
+
+        // ฟัง event ที่ Klaro ส่งเข้า GTM
+        window.dataLayer.push = new Proxy(window.dataLayer.push, {
+            apply(target, thisArg, args) {
+                const data = args[0];
+
+                if (data && data.event === 'klaro-consent-granted') {
+                    // ผู้ใช้กด Accept หรือ Decline แล้ว
+                    btn.style.display = 'block';
+                }
+
+                return Reflect.apply(target, thisArg, args);
             }
         });
+
+    });
 </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        if (getCookie('klaro')) {
+            document.getElementById('cookie-settings-link').style.display = 'block';
+        }
+    });
+</script>
+<script>
+    document.getElementById('cookie-settings-link')
+        .addEventListener('click', function () {
+            klaro.show();
+        });
+</script>
+
 
 </html>

@@ -20,16 +20,6 @@ function getCookie(name) {
     return null;
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    if (!hasKlaroConsent()) {
-        const btn = document.getElementById('cookie-settings-link');
-        if (btn) btn.style.display = 'none';
-    }
-});
-
-function hasKlaroConsent() {
-    return getCookie('klaro') !== null;
-}
 
 
 // === Load language from cookie  value: th , en ===
